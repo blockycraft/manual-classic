@@ -1,0 +1,8 @@
+compile_pdf:
+  image: jrbeverly/latex:medium
+  stage: build
+  script:
+    - cd src/ && latexmk -pdf manual.tex
+  artifacts:
+    paths:
+      - src/manual.pdf
