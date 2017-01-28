@@ -1,5 +1,5 @@
 compile_pdf:
-  image: jrbeverly/latex:tetex
+  image: jrbeverly/latex:mediumplus
   stage: build
   script:
     - cd src/ && latexmk -pdf manual.tex
