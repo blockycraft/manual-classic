@@ -17,7 +17,7 @@
 \newcommand\assets{"../assets"}
 \newcommand{\asset}[2]{"\assets/#1".#2}
 \newcommand{\screenshot}[4]{
-	\begin{figure}[h!]%	
+	\begin{figure}[!ht]%	
 	\centering%
 	\includegraphics[width=#4]{\asset{#1}{png}}%
 	\caption{#2}%
@@ -69,8 +69,8 @@ Transparency exists in the block objects to enable the glass and leaves block ty
 
 \section{Glossary of Terms}
 \begin{itemize}
-\item Direction of Interaction - Defines the vector direction of the player view.
-\item Selected Block - Defines the block intersected with the vector direction of the player.
+\item \textbf{Direction of Interaction} - Defines the vector direction of the player view.
+\item \textbf{Selected Block} - Defines the block intersected with the vector direction of the player.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -262,10 +262,7 @@ The footstep sounds were provided by the software resource 'Minecraft Sounds - F
     
 The footstep audio cannot be disabled at present.
     
-\section{Bonus Objectives}
-Three graphical bonus objectives were attempted in order to provide more realism to the world.
-    
-\subsection{World Lighting}
+\section{World Lighting}
 The world was given a static lighting component that factored into the world.  This lighting value is known as 'time of day', and provides the overall lighting factor of the scene.  In this method the value of total lighting factors in the composite of light.
     
 It is important that the world light is not too bright or too dark, as such the potential contribution value is capped within the range of [0.2, 0.5] for the light values.  This value is then factored in with respect to the diffuse colour, in order to produce the final colour output.
@@ -276,7 +273,7 @@ All computation with respect to world lighting is performed in the `\textit{bloc
     
 The world lighting value can be incremented/decremented by the keys Z and X.
     
-\subsection{Light Emitting Cube}
+\section{Light Emitting Cube}
 The light emitting component of the world makes use of a light-map for storing the light contribution of an individual cube.  This can be seen with `light-maps` and `lights` variables in a ChunkGenParams and Chunk (see world.h).  These variables are used to store lighting factors about the world.
     
 The key code to distribute the light is handled by `light-fill` in main.cpp.  In this code, it handles the process of distributing the light throughout the scene by spreading out in the 6 cube directions.  This creates a diamond-like light emitting cube, but follows with the Minecraft style of lighting.
@@ -287,7 +284,7 @@ A cube in the world can be toggled as a light emitting cube using the key L. See
     
 An excellent resource for understanding light fill algorithm more is Seed of Andromeda.  See the acknowledgements for this resource. 
     
-\subsection{Shadows and Ambient Occlusion}
+\section{Shadows and Ambient Occlusion}
     
 The bulk of shadow and ambient occlusion code is handled in the method `\textbf{compute-chunk}`. This method makes use of the `\textbf{occlusion}` method found in occlusion.h.  
     
@@ -351,35 +348,28 @@ The initial iteration was written to be functional, as opposed to expressive.  I
 \section{Acknowledgements}
 I would like to acknowledge a collection of blog posts by voxel-world enthusiasts who provided the basis of understanding for the project.
 
-% TODO: Adjusting the Acknowledgements section to follow a better paradigm
-\begin{itemize}
-	\item Florian Bösch - \url{http://codeflow.org/entries/2010/dec/09/minecraft-like-rendering-experiments-in-opengl-4/#ambient-occlusion}
-	\item Let's Code - http://www.sea-of-memes.com/LetsCode35/LetsCode35.html
-	\item 0FPS - https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds/
-	\item Seed of Andromeda - https://www.seedofandromeda.com/blogs/29-fast-flood-fill-lighting-in-a-blocky-voxel-game-pt-1
-	\item ByteBash - http://bytebash.com/2012/03/opengl-volume-rendering/
-\end{itemize}
+\begin{enumerate}
+	\item Kenny Voxel Pack. {\em \href{http://kenney.nl/assets/voxel-pack}{Voxel Pack.}} \texttt{(\url{http://kenney.nl/})}
+	\item Bösch, F. 2010. {\em \href{http://codeflow.org/entries/2010/dec/09/minecraft-like-rendering-experiments-in-opengl-4/#ambient-occlusion}{Minecraft Like Rendering Experiments in OpenGL 4.}} \texttt{(\url{http://codeflow.org/})}
+	\item Let's Code. 2011. {\em \href{http://www.sea-of-memes.com/LetsCode35/LetsCode35.html}{Part 35: Minecraft Lighting.}} \texttt{(\url{http://www.sea-of-memes.com/})}
+	\item 0FPS. 2013. {\em \href{https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds/}{Ambient occlusion for Minecraft-like worlds.}} \texttt{(\url{https://0fps.net/})}
+	\item Seed of Andromeda. {\em \href{https://www.seedofandromeda.com/blogs/29-fast-flood-fill-lighting-in-a-blocky-voxel-game-pt-1/}{Fast Flood Fill Lighting in a Blocky Voxel Game: Pt 1.}} \texttt{(\url{https://www.seedofandromeda.com})}
+	\item ByteBash. 2012. {\em \href{http://bytebash.com/2012/03/opengl-volume-rendering/}{OpenGL Minecraft Style Volume Rendering.}} \texttt{(\url{http://bytebash.com})}
+\end{enumerate}
 
 %-------------------------------------------------------------------------------
 % References
 %-------------------------------------------------------------------------------
 
-% TODO: Adjusting the Bibliography section to follow a better paradigm
 \nocite{*}
 \begin{thebibliography}{1}
 	    
 	\bibitem{inoise} Perlin, K. 2002. {\em Improving Noise.} Computer Graphics 35(3).
-	    
 	\bibitem{gpugems}  Perlin, K. 2004. {\em Implementing Improved Perlin Noise.} GPU Gems
-	    
 	\bibitem{nparticle}  E. Hastings, R. Guha, and K. O. Stanley,. {\em Neat particles: Design, representation, and animation of particle system effects,} Proceedings of the IEEE Symposium on Computational Intelligence and Games (CIG), 2007
-	  
 	\bibitem{occl} P. Shanmugam, O. Arikan. {\em Hardware accelerated ambient occlusion techniques on GPUs. }  SIGGRAPH 2007.
-	    
 	\bibitem{voxel}  Wilder, Michael W., {\em An Investigation in Implementing a C++ Voxel Game Engine with Destructible Terrain } (2015). Honors Research Projects. Paper 217.
-	 
 	\bibitem{bloxel} E. Arneback, A. Lunden, et al {\em Bloxel - Developing a voxel game engine in Java using OpenGL. } GUPEA 2015.
-	     
 \end{thebibliography}
 \bibliographystyle{plain}
 \clearpage
