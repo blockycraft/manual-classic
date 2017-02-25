@@ -1,64 +1,91 @@
 \documentclass{book}
+
+%-------------------------------------------------------------------------------
+% Packages
+%-------------------------------------------------------------------------------
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{courier}
+\usepackage[os=win]{menukeys}
 
-\title{\huge Blockycraft}
-\author{Jonathan Beverly \\ jrbeverl}
+%-------------------------------------------------------------------------------
+% Commands
+%-------------------------------------------------------------------------------
+
+\newcommand{\Blockycraft}{\textbf{Blockycraft}}
+\newcommand\assets{"../assets"}
+\newcommand{\asset}[2]{"../assets/#1".#2}
+
+%-------------------------------------------------------------------------------
+% Document
+%-------------------------------------------------------------------------------
 
 \begin{document}
-\maketitle
+
+%-------------------------------------------------------------------------------
+% Title Page
+%-------------------------------------------------------------------------------
+
+\begin{titlepage}
+	\centering
+	\includegraphics[width=50mm]{\asset{icon}{png}}\\
+	\vspace{1.5cm}
+	{\huge\bfseries Blockycraft Manual\par}
+	{\Large\itshape Jonathan Beverly (\href{jrbeverly.me}{jrbeverly})\par}
+	\vfill
+	{\large\textbf{Abstract}\par}
+	\vspace{1.0cm}
+	Blockycraft is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.
+	\\\vspace{0.5cm}
+	{\large \today\par}
+\end{titlepage}
+
 \tableofcontents
+
+%-------------------------------------------------------------------------------
+% Introduction
+%-------------------------------------------------------------------------------
 
 \chapter{Introduction}
 \section{Purpose}
-The purpose of this project was to create a Minecraft inspired world that utilized core functional techniques and demonstrate it with an interactive demo game.
-    
-The interaction demo is focused on demostrating key graphical components of the world that are pivotal to a Minecraft block world.  Specifically these include collision, multiple blocks, world generation and consistent visuals.
-    
-This project was interesting and challenging because it involves using varied techniques to produce a final composite result. I learned how to effectively use Perlin Noise to achieve realistic world generation as well as techniques to describe the lighting and shadows of a dynamic world. 
+\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment using keyboard and mouse commands.  The techniques used in the demo can be toggled using keyboard commands.  The techniques included in the project focus on collision, world generation, shadows and lighting.
+\\\\
+The \Blockycraft{} project was a positive experience in learning and applying graphics oriented techniques.  Applying Perlin Noise to the environment to produce varying environment designs, then seeing it come together with lighting and shadows produces an engaging world.
 
 \section{Overview of Features}
 The interactive demo is navigated using first-person controls, similar to first-person shooter games.
-A user interface allows the user to see the currently block status.  Texture mapping allow for the blocks in the world to be of varying types. 
-    
-The world is generated using Improved Perlin Noise in order to keep the world dynamic.  Octave Perlin is used to control the presence of rolling hills or high altitude mountains.
+A user interface allows the user to see the currently block status.  Texture mapping allow for the blocks in the world to be of varying types.  The world is generated using Improved Perlin Noise in order to keep the world dynamic.  Octave Perlin is used to control the presence of rolling hills or high altitude mountains.  Static collision is creating by detecting collision of the player with the scene, and is fairly straightforward.  Dynamic collision was not completed, but it was intended that objects would exist in the scene that the player could collide with causing an effect similar to a knockback.  
 
-Static collision is creating by detecting collision of the player with the scene, and is fairly straightforward.  Dynamic collision was not completed, but it was intended that objects would exist in the scene that the player could collide with causing an effect similar to a knockback.  
+Transparency exists in the block objects to enable the glass and leaves block types.  It uses a specific colour (magenta) to identify components that are transparent.  Keyframe animation exists within the clouds in order to move them in an interesting manner.  Each of the clouds has their own unique set of keyframes to keep the cloud movement interesting.  Sound was added using SDL Mixer - sound effects are synchronized with movement in the game.  Specifically the type of block the player is currently walking on determine the footstep noise.  If the player is above blocks the 'overworld' song will play, if underground it will play a different song. Additional light and shading factors were added into the final result in order to improve the visual aspect of the interactive demo.  These features can all be enabled at once to provide the full Minecraft experience. Most of them can be toggled by pressing a number key associated with the objective. 
 
-Transparency exists in the block objects to enable the glass and leaves block types.  It uses a specific colour (magenta) to identify components that are transparent.
-
-Keyframe animation exists within the clouds in order to move them in an interesting manner.  Each of the clouds has their own unique set of keyframes to keep the cloud movement interesting.
-
-Sound was added using SDL Mixer - sound effects are synchronized with movement in the game.  Specifically the type of block the player is currently walking on determine the footstep noise.  If the player is above blocks the 'overworld' song will play, if underground it will play a different song. 
-
-Additional light and shading factors were added into the final result in order to improve the visual aspect of the interactive demo.
-
-These features can all be enabled at once to provide the full Minecraft experience. Most of them can be toggled by pressing a number key associated with the objective. 
+%-------------------------------------------------------------------------------
+% Manual
+%-------------------------------------------------------------------------------
 
 \chapter{Manual}
 \section{Running the Program}
-\subsection{Dependencies}
-In addition to the premake4 build system, the following libraries are dependencies of this application:
-\begin{itemize}
-	\item GLEW - The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source C/C++ extension loading library.
-	\item GLU - The OpenGL Utility Library
-	\item GLFW3 - Multi-platform for simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events.
-	\item Lodepng - LodePNG is a PNG image decoder and encoder.
-	\item SDL - Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to graphics hardware.
-	\item SDL Mixer - SDL mixer is a sample multi-channel audio mixer library. 
-\end{itemize}
-
 \subsection{Compilation and Execution}
-The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\textit{premake4 gmake  make}).  To build the specific project navigate to the source directory (\textit{src}) and create the program makefile (\textit{premake4 gmake make}).
-This process is outlined in the README of the source.
+The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\texttt{premake4 gmake  make}).  To build the project navigate to the source directory (\texttt{src}) and create the program makefile (\texttt{premake4 gmake make}).
+This process is outlined in the \texttt{README} of the source.
 
-To run the program after building, simply run `\textbf{./Blockycraft}' from the command line.  To quit the program press escape.
+To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press escape.
+
+
+\subsection{Dependencies}
+In addition to the premake4 build system, the following libraries are dependencies of this application: 
+\begin{itemize}
+	\item \href{https://github.com/nigels-com/glew}{GLEW} - The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source C/C++ extension loading library.
+	\item \href{https://www.opengl.org/resources/libraries/}{GLU} - The OpenGL Utility Library
+	\item \href{http://www.glfw.org/docs/latest/}{GLFW3} - Multi-platform for simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events.
+	\item \href{http://lodev.org/lodepng/}{Lodepng} - LodePNG is a PNG image decoder and encoder.
+	\item \href{https://www.libsdl.org/}{SDL} - Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to graphics hardware.
+	\item \href{https://www.libsdl.org/projects/SDL_mixer/}{SDL Mixer} - SDL mixer is a sample multi-channel audio mixer library. 
+\end{itemize}
 
 \section{Controls}
 \subsection{Mouse}
-The base controls for the game work similar to Minecraft.  By moving the mouse in to change the angle of viewing in the 3D world.
-Note that the mouse is captured, so in order to regain control of the mouse cursor, you can quit the program by pressing escape.
+The base controls for the game work similar to Minecraft.  By moving the mouse in to change the angle of viewing in the 3D world.  Note that the mouse is captured, so in order to regain control of the mouse cursor, you can quit the program by pressing escape.
 
 \subsection{Keyboard}
 To navigate the 3D environment, the application follows Minecraft's movement scheme.  Using the `WASD' keys the player can move about the scene. 
@@ -69,14 +96,14 @@ The key 'SPACE' makes your character jump, allowing easier movement through the 
       
 \subsection{Special Keys}
 \begin{itemize}
-	\item Escape - quits the program.
-	\item Z/X - Increases/Decreases the amount of visible global light
-	\item J/K - Increases/Decreeases thge frequency value used in the Octave Perlin Noise
-	\item C/V - Increases/Decreases the radius of chunks present in the scene.
-	\item F/G - Shifts the current selected block either left or right.
-	\item P - Toggles the particle visibility type
-	\item O - Toggles the orientation component of the Cloud animation.
-	\item L - Toggles the currently targetted block (by Crosshairs) to become a Light Emitting block.
+	\item \keys{Escape} - quits the program. 
+	\item \keys{Z}/\keys{X} - Increases/Decreases the amount of visible global light
+	\item \keys{J}/\keys{K} - Increases/Decreeases thge frequency value used in the Octave Perlin Noise
+	\item \keys{C}/\keys{V} - Increases/Decreases the radius of chunks present in the scene.
+	\item \keys{F}/\keys{G} - Shifts the current selected block either left or right.
+	\item \keys{P} - Toggles the particle visibility type
+	\item \keys{O} - Toggles the orientation component of the Cloud animation.
+	\item \keys{L} - Toggles the currently targetted block (by Crosshairs) to become a Light Emitting block.
 \end{itemize}
       
 \subsection{Toggle Settings Keys}
@@ -90,6 +117,10 @@ The number keys toggle specific features in the scene.
 	\item 8 - Toggles the visibility of clouds in the scene.
 	\item 9 - Toggles the visibility of particles in the scene.
 \end{itemize}
+
+%-------------------------------------------------------------------------------
+% Technical Components
+%-------------------------------------------------------------------------------
 
 \chapter{Technical Components}
 \section{The Scene}
@@ -284,6 +315,10 @@ Instead of using a proper \textbf{List3D} implementation that abstracts away the
 	      
 	\item Testing and verification was all manual which means there are some strange bugs with respect to ambient occlusion of the code.
 \end{itemize}
+
+%-------------------------------------------------------------------------------
+% Conclusion
+%-------------------------------------------------------------------------------
 
 \chapter{Conclusion}
 \section{Moving Forward}

@@ -2,7 +2,9 @@ compile_pdf:
   image: jrbeverly/latex:full
   stage: build
   script:
-    - cd src/ && latexmk -pdf manual.tex
+    - sh build.sh
+  only:
+    - master
   artifacts:
     paths:
-      - src/manual.pdf
+      - manual.pdf
