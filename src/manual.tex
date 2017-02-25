@@ -15,7 +15,15 @@
 
 \newcommand{\Blockycraft}{\textbf{Blockycraft}}
 \newcommand\assets{"../assets"}
-\newcommand{\asset}[2]{"../assets/#1".#2}
+\newcommand{\asset}[2]{"\assets/#1".#2}
+\newcommand{\screenshot}[4]{
+	\begin{figure}[h!]%	
+	\centering%
+	\includegraphics[width=#4]{\asset{#1}{png}}%
+	\caption{#2}%
+	\label{#3}%
+	\end{figure}%
+}
 
 %-------------------------------------------------------------------------------
 % Document
@@ -36,7 +44,7 @@
 	\vfill
 	{\large\textbf{Abstract}\par}
 	\vspace{1.0cm}
-	Blockycraft is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.
+	\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.
 	\\\vspace{0.5cm}
 	{\large \today\par}
 \end{titlepage}
@@ -49,15 +57,21 @@
 
 \chapter{Introduction}
 \section{Purpose}
-\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment using keyboard and mouse commands.  The techniques used in the demo can be toggled using keyboard commands.  The techniques included in the project focus on collision, world generation, shadows and lighting.
+\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment using keyboard and mouse commands.  The techniques used in the demo can be toggled using keyboard commands.  Included in the project are technical components such as collision, world generation, shadows and lighting.
 \\\\
-The \Blockycraft{} project was a positive experience in learning and applying graphics oriented techniques.  Applying Perlin Noise to the environment to produce varying environment designs, then seeing it come together with lighting and shadows produces an engaging world.
+The \Blockycraft{} project was a positive experience in learning and applying graphics oriented techniques.  Applying Perlin Noise to the environment to produce varying environments, then seeing it come together with lighting and shadows produces an engaging world.
 
 \section{Overview of Features}
 The interactive demo is navigated using first-person controls, similar to first-person shooter games.
 A user interface allows the user to see the currently block status.  Texture mapping allow for the blocks in the world to be of varying types.  The world is generated using Improved Perlin Noise in order to keep the world dynamic.  Octave Perlin is used to control the presence of rolling hills or high altitude mountains.  Static collision is creating by detecting collision of the player with the scene, and is fairly straightforward.  Dynamic collision was not completed, but it was intended that objects would exist in the scene that the player could collide with causing an effect similar to a knockback.  
 
 Transparency exists in the block objects to enable the glass and leaves block types.  It uses a specific colour (magenta) to identify components that are transparent.  Keyframe animation exists within the clouds in order to move them in an interesting manner.  Each of the clouds has their own unique set of keyframes to keep the cloud movement interesting.  Sound was added using SDL Mixer - sound effects are synchronized with movement in the game.  Specifically the type of block the player is currently walking on determine the footstep noise.  If the player is above blocks the 'overworld' song will play, if underground it will play a different song. Additional light and shading factors were added into the final result in order to improve the visual aspect of the interactive demo.  These features can all be enabled at once to provide the full Minecraft experience. Most of them can be toggled by pressing a number key associated with the objective. 
+
+\section{Glossary of Terms}
+\begin{itemize}
+\item Direction of Interaction - Defines the vector direction of the player view.
+\item Selected Block - Defines the block intersected with the vector direction of the player.
+\end{itemize}
 
 %-------------------------------------------------------------------------------
 % Manual
@@ -69,7 +83,7 @@ Transparency exists in the block objects to enable the glass and leaves block ty
 The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\texttt{premake4 gmake  make}).  To build the project navigate to the source directory (\texttt{src}) and create the program makefile (\texttt{premake4 gmake make}).
 This process is outlined in the \texttt{README} of the source.
 
-To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press escape.
+To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
 
 
 \subsection{Dependencies}
@@ -85,37 +99,43 @@ In addition to the premake4 build system, the following libraries are dependenci
 
 \section{Controls}
 \subsection{Mouse}
-The base controls for the game work similar to Minecraft.  By moving the mouse in to change the angle of viewing in the 3D world.  Note that the mouse is captured, so in order to regain control of the mouse cursor, you can quit the program by pressing escape.
+The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.  Using the mouse, you can change the angle of viewing, as well as the direction of interaction.  The mouse is captured, so in order to regain control of the mouse cursor you will need to exit the program using \keys{Escape} or switch context using \keys{\Alt + Tab \tab}.
 
 \subsection{Keyboard}
-To navigate the 3D environment, the application follows Minecraft's movement scheme.  Using the `WASD' keys the player can move about the scene. 
+The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.   Using the keyboard, you can navigate through the 3-dimensional world using the \keys{W}, \keys{A}, \keys{S}, \keys{D} keys.  The player position will move through the scene, but will be constrained to the world.  To fully observe the demo, you can use the \keys{ Tab \tab} key to enable you to fly through the scene. 
 
-The key 'TAB' makes your character fly in the scene, allowing viewing the scene from a different perspective.
-      
-The key 'SPACE' makes your character jump, allowing easier movement through the scene.
+\subsection{Action Keys}
+\begin{itemize}
+	\item \keys{W} - Moves the player character forward relative to the view direction.
+	\item \keys{A} - Moves the player character to the left relative to the view direction.
+	\item \keys{S} - Moves the player character backward relative to the view direction.
+	\item \keys{D} - Moves the player character to the right relative to the view direction.
+	\item \keys{Space} - The player will jump in the scene (or move vertically if flying is enabled)
+	\item \keys{ Tab \tab} - Toggles flying, allowing you to fly through the scene.
+\end{itemize}
       
 \subsection{Special Keys}
 \begin{itemize}
-	\item \keys{Escape} - quits the program. 
-	\item \keys{Z}/\keys{X} - Increases/Decreases the amount of visible global light
-	\item \keys{J}/\keys{K} - Increases/Decreeases thge frequency value used in the Octave Perlin Noise
+	\item \keys{Escape} - Quits the program. 
+	\item \keys{Z}/\keys{X} - Increases/Decreases the amount of visible global light.
+	\item \keys{J}/\keys{K} - Increases/Decreases the frequency value used in the Octave Perlin Noise.
 	\item \keys{C}/\keys{V} - Increases/Decreases the radius of chunks present in the scene.
-	\item \keys{F}/\keys{G} - Shifts the current selected block either left or right.
-	\item \keys{P} - Toggles the particle visibility type
+	\item \keys{F}/\keys{G} - Cycles between the available block types for placement.
+	\item \keys{P} - Toggles the visibility of particles.
 	\item \keys{O} - Toggles the orientation component of the Cloud animation.
-	\item \keys{L} - Toggles the currently targetted block (by Crosshairs) to become a Light Emitting block.
+	\item \keys{L} - Toggles the selected block to become a Light Emitting block.
 \end{itemize}
       
 \subsection{Toggle Settings Keys}
 The number keys toggle specific features in the scene.
       
 \begin{itemize}
-	\item 2 - Toggles the visibility of the user interface.
-	\item 3 - Toggles the UV Mapping of objects within the scene.
-	\item 4 - Regenerates the world and resets the current scene properties.
-	\item 7 - Toggles the application of transparency.
-	\item 8 - Toggles the visibility of clouds in the scene.
-	\item 9 - Toggles the visibility of particles in the scene.
+	\item \keys{2} - Toggles the visibility of the user interface.
+	\item \keys{3} - Toggles the UV Mapping of objects within the scene.
+	\item \keys{4} - Regenerates the world and resets the current scene properties.
+	\item \keys{7} - Toggles the application of transparency.
+	\item \keys{8} - Toggles the visibility of clouds in the scene.
+	\item \keys{9} - Toggles the visibility of particles in the scene.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -321,16 +341,17 @@ Instead of using a proper \textbf{List3D} implementation that abstracts away the
 %-------------------------------------------------------------------------------
 
 \chapter{Conclusion}
-\section{Moving Forward}
-There is lots of room for improvement for the almost all components of the code.  Especially with respect to the development of lighting and structuring of 3 dimensional data with the current code.
+\section{Initial Iteration}
+The initial iteration of \Blockycraft{} had some major flaws in its design due to time constraints and misconceptions that existed during development of the project.  The project was not designed in a way that would enable thorough testing of key algorithms of the project.  Specifically the 3 dimensional data was stored in a \textit{rough} array with poor bounds checking.  This meant under certain conditions it could cause segmentation faults.   
 
-The spatial chunks are not multi-threaded, meaning that drawing them in the scene takes a very long time for sufficiently large number of chunks.
-      
-A lot of the code is written to be functional as opposed to expressive.  As a result, a lot of the code can seem to be obfuscated by the current implementation.  Examples of this are magic numbers or numeric assignment with no clear reason as to why it is occurring.  
+The project did not make use of parallelization, as the original code structure did not lend itself to multi-threaded environments.  The structure of the 3 dimensional list was a key part of ensuring that the code could not easily be parallelized.  As such spatial chunks needed to be generated linearly, which resulted in a significant delay in the application when attempting to regenerate the environment.
+
+The initial iteration was written to be functional, as opposed to expressive.  Improvements in the \Blockycraft{} source code focused on ensuring the code was structured in a testable manner.  By separating the graphics components from the algorithms, this enabled the code to be parallelized and properly validated.
 
 \section{Acknowledgements}
-I would like to acknowledge a collection of blog posts by voxel world enthusiasts who provided the basis of understanding for a wide variety of concepts.
+I would like to acknowledge a collection of blog posts by voxel-world enthusiasts who provided the basis of understanding for the project.
 
+% TODO: Adjusting the Acknowledgements section to follow a better paradigm
 \begin{itemize}
 	\item Florian Bösch - \url{http://codeflow.org/entries/2010/dec/09/minecraft-like-rendering-experiments-in-opengl-4/#ambient-occlusion}
 	\item Let's Code - http://www.sea-of-memes.com/LetsCode35/LetsCode35.html
@@ -339,8 +360,11 @@ I would like to acknowledge a collection of blog posts by voxel world enthusiast
 	\item ByteBash - http://bytebash.com/2012/03/opengl-volume-rendering/
 \end{itemize}
 
-% References.
+%-------------------------------------------------------------------------------
+% References
+%-------------------------------------------------------------------------------
 
+% TODO: Adjusting the Bibliography section to follow a better paradigm
 \nocite{*}
 \begin{thebibliography}{1}
 	    
@@ -358,57 +382,51 @@ I would like to acknowledge a collection of blog posts by voxel world enthusiast
 	     
 \end{thebibliography}
 \bibliographystyle{plain}
-    
-\newpage
+\clearpage
+
+%-------------------------------------------------------------------------------
+% Appendix
+%-------------------------------------------------------------------------------
 \chapter{Appendix}
 \appendix
+
 \section{Appendix A - World} \label{AppendixA}
-\centering
-\includegraphics[width=1.0\textwidth]{"../assets/screenshot01".png}
-    
+\screenshot{world}{The \Blockycraft{} World.}{ScreenshotA}{1.0\textwidth}
 \clearpage
+
 \section{Appendix B - Perlin} \label{AppendixB}
-\centering
-\includegraphics[width=0.4\textwidth]{"../assets/octave perlin 1".png}
-\includegraphics[width=0.4\textwidth]{"../assets/octave perlin 2".png}
-\includegraphics[width=0.4\textwidth]{"../assets/perlin noise aerial".png}
-\includegraphics[width=0.4\textwidth]{"../assets/perlin noise world 2".png}
-\includegraphics[width=0.75\textwidth]{"../assets/perlin noise world".png}
-     
+\screenshot{hills}{A generated block world with height corresponding to block type.}{ScreenshotB1}{0.45\textwidth}
+\screenshot{plains}{A generated block world with height corresponding to block type.}{ScreenshotB2}{0.45\textwidth}
+\screenshot{aerial}{A top-view of a generated block world.}{ScreenshotB3}{0.45\textwidth}
+\screenshot{high_frequency}{A generated block world with a high frequency value. ($f=0.8$)}{ScreenshotB4}{0.55\textwidth}
+\screenshot{medium_frequency}{A generated block world with a reasonable frequency value. ($f=0.5$)}{ScreenshotB5}{0.55\textwidth}
+\screenshot{low_frequency}{A generated block world with a low frequency value. ($f=0.1$)}{ScreenshotB6}{0.55\textwidth}
 \clearpage
+
 \section{Appendix C - Transparency Toggle} \label{AppendixC}
-\centering
-\includegraphics[width=0.5\textwidth]{"../assets/transparency off".png}
-\includegraphics[width=0.5\textwidth]{"../assets/transparency on".png}
-
-    
+\screenshot{transparency}{Transparency toggle on glass blocks.}{ScreenshotC}{1.0\textwidth}
 \clearpage
+
+
 \section{Appendix D - Clouds} \label{AppendixD}
-\centering
-\includegraphics[width=1.0\textwidth]{"../assets/clouds".png}
-
+\screenshot{clouds}{Clouds moving in the environment.}{ScreenshotD}{1.0\textwidth}
 \clearpage
+
 \section{Appendix E - Particles} \label{AppendixE}
-\centering
-\includegraphics[width=0.5\textwidth]{"../assets/particle angle".png}
-\includegraphics[width=0.5\textwidth]{"../assets/particle angle display".png}
-     
-\includegraphics[width=0.3\textwidth]{"../assets/particles".png}
-
+\screenshot{particles}{Particles created after destruction of a block.}{ScreenshotE1}{0.35\textwidth}
+\screenshot{particle_angle}{The angle of the particles.}{ScreenshotE2}{0.35\textwidth}
+\screenshot{billboard}{The billboarding of the particles.}{ScreenshotE3}{0.35\textwidth}
 \clearpage
+
 \section{Appendix F - Light Emitting} \label{AppendixF}
-\centering
-\includegraphics[width=1.0\textwidth]{"../assets/light emitting cube".png}  
-    
+\screenshot{lighting}{Light emitting from a cube.}{ScreenshotF}{1.0\textwidth}
+\clearpage
 
-\clearpage
 \section{Appendix G - Height Shadows} \label{AppendixG}
-\centering
-\includegraphics[width=0.75\textwidth]{"../assets/height based shadows".png}    
-    
+\screenshot{shadows}{Ground shadows based on the positioning of cubes.}{ScreenshotG}{0.75\textwidth}
 \clearpage
+
 \section{Appendix H - Ambient Occlusion} \label{AppendixH}
-\centering
-\includegraphics[width=0.75\textwidth]{"../assets/ambient occlusion".png}   
-\includegraphics[width=0.75\textwidth]{"../assets/ambient occlusion 2".png}   
+\screenshot{aocclusion_angle}{Angled view of ambient occlusion based on nearby block configurations.}{ScreenshotH1}{0.75\textwidth}
+\screenshot{aocclusion}{Ambient occlusion based on nearby block configurations.}{ScreenshotH2}{0.75\textwidth}
 \end{document}
