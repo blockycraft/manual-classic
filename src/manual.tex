@@ -3,6 +3,7 @@
 %-------------------------------------------------------------------------------
 % Packages
 %-------------------------------------------------------------------------------
+
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -19,9 +20,9 @@
 \newcommand{\screenshot}[4]{
 	\begin{figure}[!ht]%	
 	\centering%
-	\includegraphics[width=#4]{\asset{#1}{png}}%
-	\caption{#2}%
 	\label{#3}%
+	\includegraphics[width=#4]{\asset{#1}{png}}%
+	\caption{#2}%	
 	\end{figure}%
 }
 
@@ -49,7 +50,12 @@
 	{\large \today\par}
 \end{titlepage}
 
+%-------------------------------------------------------------------------------
+% Contents of Manual
+%-------------------------------------------------------------------------------
+
 \tableofcontents
+\listoffigures
 
 %-------------------------------------------------------------------------------
 % Introduction
@@ -57,12 +63,11 @@
 
 \chapter{Introduction}
 \section{Purpose}
-\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment using keyboard and mouse commands.  The techniques used in the demo can be toggled using keyboard commands.  Included in the project are technical components such as collision, world generation, shadows and lighting.
+\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment with the gameplay revolving around breaking and placing blocks.  The techniques used in the demo can be toggled using keyboard commands.  Included in the project are technical components such as collision, world generation, shadows and lighting.
 \\\\
-The \Blockycraft{} project was a positive experience in learning and applying graphics oriented techniques.  Applying Perlin Noise to the environment to produce varying environments, then seeing it come together with lighting and shadows produces an engaging world.
+\Blockycraft{} is an interactive demo that uses standard first person controls to navigate the world.  The demo revolves around breaking and placing blocks. The game world is composed of rough cubes arranged in a fixed grid pattern and representing different materials, such as dirt, stone, various ores.
 
 \section{Overview of Features}
-The interactive demo is navigated using first-person controls, similar to first-person shooter games.
 A user interface allows the user to see the currently block status.  Texture mapping allow for the blocks in the world to be of varying types.  The world is generated using Improved Perlin Noise in order to keep the world dynamic.  Octave Perlin is used to control the presence of rolling hills or high altitude mountains.  Static collision is creating by detecting collision of the player with the scene, and is fairly straightforward.  Dynamic collision was not completed, but it was intended that objects would exist in the scene that the player could collide with causing an effect similar to a knockback.  
 
 Transparency exists in the block objects to enable the glass and leaves block types.  It uses a specific colour (magenta) to identify components that are transparent.  Keyframe animation exists within the clouds in order to move them in an interesting manner.  Each of the clouds has their own unique set of keyframes to keep the cloud movement interesting.  Sound was added using SDL Mixer - sound effects are synchronized with movement in the game.  Specifically the type of block the player is currently walking on determine the footstep noise.  If the player is above blocks the 'overworld' song will play, if underground it will play a different song. Additional light and shading factors were added into the final result in order to improve the visual aspect of the interactive demo.  These features can all be enabled at once to provide the full Minecraft experience. Most of them can be toggled by pressing a number key associated with the objective. 
@@ -71,6 +76,7 @@ Transparency exists in the block objects to enable the glass and leaves block ty
 \begin{itemize}
 \item \textbf{Direction of Interaction} - Defines the vector direction of the player view.
 \item \textbf{Selected Block} - Defines the block intersected with the vector direction of the player.
+\item \textbf{Chunk} - A spatial partition of the world blocks.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -84,7 +90,6 @@ The program uses the \textbf{premake4} build system to handle the creation of co
 This process is outlined in the \texttt{README} of the source.
 
 To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
-
 
 \subsection{Dependencies}
 In addition to the premake4 build system, the following libraries are dependencies of this application: 
@@ -144,7 +149,7 @@ The number keys toggle specific features in the scene.
 
 \chapter{Technical Components}
 \section{The Scene}
-The scene is composed of a set of Blocks that are collected into a set of Chunks.  Each Chunk acts as a 32x32x32 region that stores 32768 blocks of the scene.  This spatial separate is for the purposes of making rendering of the scene easier. 
+The interface demo is inspired from Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}).  The interactive demo consists of textured cubes in a procedurally generated 3D world.  You can build constructions using the different types of blocks.  The world is composed of a set of Blocks spatially partitioned into Chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32} x \texttt{32} x \texttt{32} (width, height, depth), this stores \texttt{32768} blocks of the scene.
   
 See also Appendix A for a visual of the voxel world.
   
@@ -377,6 +382,7 @@ I would like to acknowledge a collection of blog posts by voxel-world enthusiast
 %-------------------------------------------------------------------------------
 % Appendix
 %-------------------------------------------------------------------------------
+
 \chapter{Appendix}
 \appendix
 
