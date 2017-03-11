@@ -77,6 +77,7 @@ Transparency exists in the block objects to enable the glass and leaves block ty
 \item \textbf{Direction of Interaction} - Defines the vector direction of the player view.
 \item \textbf{Selected Block} - Defines the block intersected with the vector direction of the player.
 \item \textbf{Chunk} - A spatial partition of the world blocks.
+\item \textbf{Fragment} - A Fragment is a collection of values produced by the Rasterizer. Each fragment represents a sample-sized segment of a rasterized Primitive.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -86,9 +87,9 @@ Transparency exists in the block objects to enable the glass and leaves block ty
 \chapter{Manual}
 \section{Running the Program}
 \subsection{Compilation and Execution}
-The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\texttt{premake4 gmake  make}).  To build the project navigate to the source directory (\texttt{src}) and create the program makefile (\texttt{premake4 gmake make}).
+The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\texttt{premake4 gmake \&\& make}).  To build the project navigate to the source directory (\texttt{src}) and create the program makefile (\texttt{premake4 gmake \&\& make}).
 This process is outlined in the \texttt{README} of the source.
-
+\\\\
 To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
 
 \subsection{Dependencies}
@@ -107,7 +108,7 @@ In addition to the premake4 build system, the following libraries are dependenci
 The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.  Using the mouse, you can change the angle of viewing, as well as the direction of interaction.  The mouse is captured, so in order to regain control of the mouse cursor you will need to exit the program using \keys{Escape} or switch context using \keys{\Alt + Tab \tab}.
 
 \subsection{Keyboard}
-The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.   Using the keyboard, you can navigate through the 3-dimensional world using the \keys{W}, \keys{A}, \keys{S}, \keys{D} keys.  The player position will move through the scene, but will be constrained to the world.  To fully observe the demo, you can use the \keys{ Tab \tab} key to enable you to fly through the scene. 
+The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.   Using the keyboard, you can navigate through the 3-dimensional world using the \keys{W}, \keys{A}, \keys{S}, \keys{D} keys.  The player position will move through the scene, but will be constrained by the physics of the world.  To fully observe the demo, you can use the \keys{Tab \tab} key to enable you to fly through the scene.
 
 \subsection{Action Keys}
 \begin{itemize}
@@ -116,7 +117,7 @@ The interactive demo uses the standard mouse and keyboard movements controls for
 	\item \keys{S} - Moves the player character backward relative to the view direction.
 	\item \keys{D} - Moves the player character to the right relative to the view direction.
 	\item \keys{Space} - The player will jump in the scene (or move vertically if flying is enabled)
-	\item \keys{ Tab \tab} - Toggles flying, allowing you to fly through the scene.
+	\item \keys{Tab \tab} - Toggles flying, allowing you to fly through the scene.
 \end{itemize}
       
 \subsection{Special Keys}
@@ -149,28 +150,19 @@ The number keys toggle specific features in the scene.
 
 \chapter{Technical Components}
 \section{The Scene}
-The interface demo is inspired from Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}).  The interactive demo consists of textured cubes in a procedurally generated 3D world.  You can build constructions using the different types of blocks.  The world is composed of a set of Blocks spatially partitioned into Chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32} x \texttt{32} x \texttt{32} (width, height, depth), this stores \texttt{32768} blocks of the scene.
+The interface demo is inspired from Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}).  The interactive demo consists of textured cubes in a procedurally generated 3-dimensional world.  You can build constructions using the different types of blocks.  The world is composed of a set of Blocks spatially partitioned into Chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32} x \texttt{32} x \texttt{32} (width, height, depth), this stores \texttt{32768} blocks of the scene.
   
-See also Appendix A for a visual of the voxel world.
+See also Appendix \ref{appendix:A} for a visual of the voxel world.
   
 \section{User Interface}
-The user interface is defined by two components.  The first component is a cross-hair that represents the current sight vector of the player.  The second component is a block is the bottom-left corner of the screen representing the currently selected block.  The selected block is the type of block that will be placed when perform the mouse right click interaction.
-    
-The first component involves making us of the player rotational coordinates (x, y) that determine the current sight of the player.  These two values are used to calculate the sight vector that is used to determine the block the player is currently interacting with through mouse interaction.
-    
-The second component can be altered by the keys F and G.  These allow the type to be changed, allowing different kinds of blocks to be placed in the scene.
-    
-The user interface can be enabled and disable using the number key 2. 
-    
+The user interface (UI) serves the purpose of facilitating the placement and destruction of blocks in the world.  As the 3-dimensional world consists of different types of blocks, a selection pane is present that shows the current block type selection for placement.  The vector of interaction is defined by the cross-hair, a small cross in the middle of the screen.  It shows the exact point where you will use actions such as block placement or destruction.
+\\\\
+The user interface can be toggled by the key \keys{2}.  The currently selected block type can be cycled using the keys \keys{F} and \keys{G}.
+
 \section{UV Texture Mapping}
-All blocks in the scene are textured using UV Mapping.  All the block textures are currently defined in a spritesheet called Textures.  This asset was acquired from the `Minecraftforum.net`
-submitted by the user CaptainJoe102 under the resource name 'Minecraft PE Original Texture Pack'.
-    
-When a cube is created using the 'construct-cube' function (see cube.cpp), the UV values of the cube are set.  This value is computed by determining the current (x, y) position the cube texture face is in the spritesheet.  Using this the exact UV ratio position is computed by factoring in the total size of the spritesheet (2048) with respect to the size of each of the texture blocks (16 pixels).  This is how the UV coordinate of a texture is computed with respect to the spritesheet.
-    
-The texture block indices are provided by a BlockDefinition structure (see block.h) that defines the index in the spritesheet of the specified face.  These indices are defined by the method getBlockDefinitions (see block.h) that quickly constructs the mapping of block type with the positions within the spritesheet.
-    
-See also Appendix G and H for the visual representation of the world without UV Mapping.
+The interactive demo consists of textured cubes in a procedurally generated 3-dimensional world.  The texturing of the cubes is handled through UV Mapping.  All blocks textures are defined in a sprite sheet that contains the blocks textures stored as several smaller graphics in a tiled grid arrangement.  The spritesheet uses a single value to index each grid in the grid arrangement.  The value is computed by determining the current ($x$, $y$) position the cube texture, then creating a ratio from the total size of the spritesheet.  Each small graphics in the grid is \texttt{16} by \texttt{16} pixels, on a \texttt{2048} by \texttt{2048} pixel spritesheet.
+\\\\
+The user interface can be toggled by the key \keys{3}.  See also Appendix \ref{appendix:G} and \ref{appendix:H} for the world with texture mapping toggled.
     
 \section{Perlin Noise}
 The world in the interactive demo is generated through Improved Perlin Noise combined with Octave Perlin Noise.  The implementation of Improved Perlin Noise (see pnoise.h) is a faithful interpretation of the java reference implementation provided in the SIGGRAPH 2002 Paper by Ken Perlin.  Although some slight modifications have been made, the code is faithful to his reference implementation.
@@ -204,7 +196,6 @@ For the implemented code the amplitude is at a constant of 32 (the height of a c
 See also Appendix B for visual examples of the Perlin Noise results.
     
 \section{Static Collision}
-    
 The collision of the player with blocks in the scene is primairly handled by a single method (see main.cpp).  The method is player-collide and works by first determining where the player is in the world.  With this information a relative position within the current block coordinate can be determined.  
     
 From here, we will compute based on the current position if the player is currently colliding with any of the blocks surrounding the current block coordinate.  This means we check collision in all 6 cube directions, as well as upwards based on the height of the player (constant of 2).
@@ -212,20 +203,11 @@ From here, we will compute based on the current position if the player is curren
 If no collision occurs, then the player position is not altered.  If a collision does occur then the player position is adjusted to be equal to the block center position with an adjusted padding.  This padding is vital to ensuring that the player does not collide to closely with blocks in the scene.
     
 The padding component discussed above can be visually scene by running towards the right or left edge of a block.  If you hit in just the right position, the player will be adjusted to the block neighbour, allowing you to move past the block.
-    
-\section{Dynamic Collision}
-    
-Dynamic collision was not finished due to poor time management with respect to the graphics components.  However, this was the current thinking with respect to its implementation.
-    
-Within the scene would be objects such as a sphere that would move about the scene.  These objects would move about the (x, z) plane randomly based on any positioning algorithm.  The y position would be determined based on an average height of the neighbouring blocks (9 blocks).  In other words, the object would always try to remain higher in the y-coordinate than any nearby blocks in order to avoid collision.
-    
-When computing collision with the player, a check would be performed to determine if the player and object were within the same spatial chunk.  If they were, a simple bounding sphere calculation would be used to determine collision.  In the event of collision between the object and block, the objects y position would increment rapidly, causing it to fly into the sky much like a power-jump.  
-    
+   
 \section{Transparency}
-    
-Within the spritesheet any transparent pixel is set to magenta (RGB - 1.0, 0.0, 1.0).  This was done so that within the shader it could compare the sampled pixel value based on the UV Mapping with the constant value of the magenta.  If this comparison was true, then the shader could discard the pixel knowing that it would be a transparent pixel.
-    
-The transparency can be toggled by the number key 7.  See also Appendix C for a visual display of transparency.
+Transparency in the technical demo uses \texttt{transparency colours}, which are pixels set to a value that is ignored in the graphics pipeline.  A sprite sheet that contains the blocks textures stored as several smaller graphics in a tiled grid arrangement, any transparent pixel is set to a pixel value of \texttt{magenta} (RGB - 1.0, 0.0, 1.0).  When the texture is passed to an OpenGL Shader, it checks to see if the fragment should be drawn with respect to the transparency colour.  When transparency is disabled, the magenta colour is visible as seen in Appendix \ref{appendix:C}.
+\\\\
+The transparency can be toggled by the key \keys{7}.  Appendix \ref{appendix:C} for a comparison of the transparency pixel.
     
 \section{Keyframe Animation}
     
@@ -344,9 +326,9 @@ Instead of using a proper \textbf{List3D} implementation that abstracts away the
 
 \chapter{Conclusion}
 \section{Initial Iteration}
-The initial iteration of \Blockycraft{} had some major flaws in its design due to time constraints and misconceptions that existed during development of the project.  The project was not designed in a way that would enable thorough testing of key algorithms of the project.  Specifically the 3 dimensional data was stored in a \textit{rough} array with poor bounds checking.  This meant under certain conditions it could cause segmentation faults.   
+The initial iteration of \Blockycraft{} had some major flaws in its design due to time constraints and misconceptions that existed during development of the project.  The project architecture did not readily facilitate unit or even smoke testing of key algorithms of the project.  A specific example is the storage of 3 dimensional data, which used a standard array with poor bounds checking and space management.  Under certain conditions this structure could cause segmentation faults.   
 
-The project did not make use of parallelization, as the original code structure did not lend itself to multi-threaded environments.  The structure of the 3 dimensional list was a key part of ensuring that the code could not easily be parallelized.  As such spatial chunks needed to be generated linearly, which resulted in a significant delay in the application when attempting to regenerate the environment.
+The project did not make use of parallelization, as the original code architecture did not lend itself to multi-threaded environments.  The method to generate chunks, a 3 dimensional spatial region, was a key part of ensuring that the code could not easily be parallelized.  As such spatial chunks needed to be generated linearly, which resulted in a significant delay in the application when attempting to regenerate the environment.
 
 The initial iteration was written to be functional, as opposed to expressive.  Improvements in the \Blockycraft{} source code focused on ensuring the code was structured in a testable manner.  By separating the graphics components from the algorithms, this enabled the code to be parallelized and properly validated.
 
@@ -383,46 +365,49 @@ I would like to acknowledge a collection of blog posts by voxel-world enthusiast
 % Appendix
 %-------------------------------------------------------------------------------
 
-\chapter{Appendix}
 \appendix
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+\renewcommand{\thesubsection}{\Alph{subsection}}
 
-\section{Appendix A - World} \label{AppendixA}
+\subsection{World} \label{appendix:A}
 \screenshot{world}{The \Blockycraft{} World.}{ScreenshotA}{1.0\textwidth}
 \clearpage
 
-\section{Appendix B - Perlin} \label{AppendixB}
+\subsection{Perlin} \label{appendix:B}
 \screenshot{hills}{A generated block world with height corresponding to block type.}{ScreenshotB1}{0.45\textwidth}
 \screenshot{plains}{A generated block world with height corresponding to block type.}{ScreenshotB2}{0.45\textwidth}
-\screenshot{aerial}{A top-view of a generated block world.}{ScreenshotB3}{0.45\textwidth}
+\screenshot{aerial}{An aerial view of a generated block world.}{ScreenshotB3}{0.45\textwidth}
 \screenshot{high_frequency}{A generated block world with a high frequency value. ($f=0.8$)}{ScreenshotB4}{0.55\textwidth}
 \screenshot{medium_frequency}{A generated block world with a reasonable frequency value. ($f=0.5$)}{ScreenshotB5}{0.55\textwidth}
 \screenshot{low_frequency}{A generated block world with a low frequency value. ($f=0.1$)}{ScreenshotB6}{0.55\textwidth}
 \clearpage
 
-\section{Appendix C - Transparency Toggle} \label{AppendixC}
-\screenshot{transparency}{Transparency toggle on glass blocks.}{ScreenshotC}{1.0\textwidth}
+\subsection{Transparency} \label{appendix:C}
+\screenshot{transparency}{Transparency toggle on transparency enabled blocks.}{ScreenshotC}{1.0\textwidth}
 \clearpage
 
 
-\section{Appendix D - Clouds} \label{AppendixD}
+\subsection{Clouds} \label{appendix:D}
 \screenshot{clouds}{Clouds moving in the environment.}{ScreenshotD}{1.0\textwidth}
 \clearpage
 
-\section{Appendix E - Particles} \label{AppendixE}
+\subsection{Particles} \label{appendix:E}
 \screenshot{particles}{Particles created after destruction of a block.}{ScreenshotE1}{0.35\textwidth}
 \screenshot{particle_angle}{The angle of the particles.}{ScreenshotE2}{0.35\textwidth}
 \screenshot{billboard}{The billboarding of the particles.}{ScreenshotE3}{0.35\textwidth}
 \clearpage
 
-\section{Appendix F - Light Emitting} \label{AppendixF}
+\subsection{Light Emitting} \label{appendix:F}
 \screenshot{lighting}{Light emitting from a cube.}{ScreenshotF}{1.0\textwidth}
 \clearpage
 
-\section{Appendix G - Height Shadows} \label{AppendixG}
+\subsection{Height Shadows} \label{appendix:G}
 \screenshot{shadows}{Ground shadows based on the positioning of cubes.}{ScreenshotG}{0.75\textwidth}
 \clearpage
 
-\section{Appendix H - Ambient Occlusion} \label{AppendixH}
-\screenshot{aocclusion_angle}{Angled view of ambient occlusion based on nearby block configurations.}{ScreenshotH1}{0.75\textwidth}
-\screenshot{aocclusion}{Ambient occlusion based on nearby block configurations.}{ScreenshotH2}{0.75\textwidth}
+\subsection{Ambient Occlusion} \label{appendix:H}
+\screenshot{aocclusion_angle}{Angled view of ambient occlusion based on neighbouring block configurations.}{ScreenshotH1}{0.75\textwidth}
+\screenshot{aocclusion}{Ambient occlusion based on neighbouring block configurations.}{ScreenshotH2}{0.75\textwidth}
+
 \end{document}
