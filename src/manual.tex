@@ -63,21 +63,17 @@
 
 \chapter{Introduction}
 \section{Purpose}
-\Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives.  It is a interactive demo that allows the user to navigate through the environment with the gameplay revolving around breaking and placing blocks.  The techniques used in the demo can be toggled using keyboard commands.  Included in the project are technical components such as collision, world generation, shadows and lighting.
-\\
-\Blockycraft{} is an interactive demo that uses standard first person controls to navigate the world.  The demo revolves around breaking and placing blocks. The game world is composed of rough cubes arranged in a fixed grid pattern and representing different materials, such as dirt, stone, and snow.
+\Blockycraft{} is an interactive demo that uses standard first person controls to navigate through a block world. \Blockycraft{} is a Minecraft inspired demo for illustrating techniques to accomplish graphical objectives. The demo revolves around breaking and placing blocks. The game world is composed of rough cubes arranged in a fixed grid pattern and representing different materials, such as dirt, stone, and snow.  The techniques used in the demo can be toggled using keyboard commands.  Included in the project are technical components such as collision, world generation, shadows and lighting.
 
 \section{Overview of Features}
-\Blockycraft{} is an interactive demo that bundles together a series of graphics techniques.  The interactive demo includes components such as user interface, texture mapping, perlin noise, 3-dimensional collision, transparency, keyframe animation, sound, lighting, shadows an ambient occlusion.  The user interface (UI) serves the purpose of facilitating the placement and destruction of blocks in the world.  The scene consists of textured cubes in a procedurally generated 3-dimensional world.  The texturing of the cubes is handled through UV Mapping.  The world is procedurally generated using Improved Perlin Noise and Octave Perlin, to produce both rolling plains and mountainous terrain.  Collision focuses on the player and the blocks that make up the 3-dimensional world.  Blocks in the scene can make use of transparency, to improve aesthetics of the code.  The interactive demo includes particles, sound and keyframe animation in the form of clouds.  Finally to ensure that the scene is visually appealing, it includes global lighting, lighting, shadows and ambient occlusion.
-\\
-Each feature can be toggled allowing the isolation of other features in the code, or keeping all of them enabled to experience the full \Blockycraft{} environment.
+\Blockycraft{} is an interactive demo that bundles together a series of graphics techniques.  The interactive demo includes components such as a primitive user interface, texture mapping, perlin noise, 3-dimensional collision, transparency, keyframe animation, sound, lighting, shadows and ambient occlusion.  The user interface (UI) serves the purpose of facilitating the placement and destruction of blocks in the world.  The scene consists of textured cubes in a procedurally generated 3-dimensional world.  The texturing of the cubes is handled through UV Mapping.  The world is procedurally generated using Improved Perlin Noise and Octave Perlin, to produce both rolling plains and mountainous terrain.  Collision focuses on the player and the blocks that make up the 3-dimensional world.  Blocks in the scene can make use of transparency, to improve aesthetics of the world.  The interactive demo includes particles, sound and keyframe animation.  Finally to ensure that the scene is visually appealing, it includes global lighting, block lighting, shadows and ambient occlusion.  Each feature can be toggled allowing the isolation of other features in the code, or keeping all of them enabled to experience the full \Blockycraft{} environment.
 
 \section{Glossary of Terms}
 \begin{itemize}
-\item \textbf{Direction of Interaction} - Defines the vector direction of the player view.
-\item \textbf{Selected Block} - Defines the block intersected with the vector direction of the player.
-\item \textbf{Chunk} - A spatial partition of the world blocks.
-\item \textbf{Fragment} - A Fragment is a collection of values produced by the Rasterizer. Each fragment represents a sample-sized segment of a rasterized Primitive.
+\item \textbf{Direction of Interaction} - Refers to the view vector of the player.
+\item \textbf{Selected Block} - Defines the block intersected with the view vector of the player.
+\item \textbf{Chunk} - A spatial partition of the 3-dimensional blocks.
+\item \textbf{Fragment} - A collection of values produced by the Rasterizer. Each fragment represents a sample-sized segment of a rasterized Primitive.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -88,9 +84,7 @@ Each feature can be toggled allowing the isolation of other features in the code
 \section{Running the Program}
 \subsection{Compilation and Execution}
 The program uses the \textbf{premake4} build system to handle the creation of compilation targets.  To build the program, navigate to the top level directory and create the program makefile (\texttt{premake4 gmake \&\& make}).  To build the project navigate to the source directory (\texttt{src}) and create the program makefile (\texttt{premake4 gmake \&\& make}).
-This process is outlined in the \texttt{README} of the source.
-\\
-To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
+This process is outlined in the \texttt{README} of the source.  To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
 
 \subsection{Dependencies}
 In addition to the premake4 build system, the following libraries are dependencies of this application: 
@@ -105,7 +99,7 @@ In addition to the premake4 build system, the following libraries are dependenci
 
 \section{Controls}
 \subsection{Mouse}
-The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.  Using the mouse, you can change the angle of viewing, as well as the direction of interaction.  The mouse is captured, so in order to regain control of the mouse cursor you will need to exit the program using \keys{Escape} or switch context using \keys{\Alt + Tab \tab}.
+The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.  Using the mouse, you can change the angle of viewing, as well as the direction of interaction.  The mouse is captured, so in order to regain control of the mouse cursor you will need to exit the program using \keys{Escape}.  You can switch context using \keys{\Alt + Tab \tab} but it does not always return control of the mouse cursor.
 
 \subsection{Keyboard}
 The interactive demo uses the standard mouse and keyboard movements controls for navigating a 3-dimensional world.   Using the keyboard, you can navigate through the 3-dimensional world using the \keys{W}, \keys{A}, \keys{S}, \keys{D} keys.  The player position will move through the scene, but will be constrained by the physics of the world.  To fully observe the demo, you can use the \keys{Tab \tab} key to enable you to fly through the scene.
@@ -116,7 +110,7 @@ The interactive demo uses the standard mouse and keyboard movements controls for
 	\item \keys{A} - Moves the player character to the left relative to the view direction.
 	\item \keys{S} - Moves the player character backward relative to the view direction.
 	\item \keys{D} - Moves the player character to the right relative to the view direction.
-	\item \keys{Space} - The player will jump in the scene (or move vertically if flying is enabled)
+	\item \keys{Space} - The player will jump in the scene. (or move vertically if flying is enabled)
 	\item \keys{Tab \tab} - Toggles flying, allowing you to fly through the scene.
 \end{itemize}
       
@@ -151,7 +145,7 @@ The number keys toggle specific features in the scene.
 
 \chapter{Technical Components}
 \section{The Scene}
-The interface demo is inspired from Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}).  The interactive demo consists of textured cubes in a procedurally generated 3-dimensional world.  You can build constructions using the different types of blocks.  The world is composed of a set of Blocks spatially partitioned into Chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32} x \texttt{32} x \texttt{32} (width, height, depth), this stores \texttt{32768} blocks of the scene.
+The interactive demo is inspired from Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}) in a procedurally generated 3-dimensional world.  You can build constructions using the different types of blocks.  The world is composed of a set of Blocks spatially partitioned into Chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32} x \texttt{32} x \texttt{32} (width, height, depth), that stores \texttt{32768} blocks of the scene.
 \vskip 2.5mm\noindent
 See also Appendix \ref{appendix:world} for a visual of the voxel world.
   
@@ -210,30 +204,9 @@ Blocks in the world can be enabled as a light emitting block.  Any block can be 
 A cube in the world can be toggled as a light emitting cube using the key \keys{L}.  See Appendix \ref{appendix:light} for a visual representation of the light emittance formation.
     
 \section{Shadows and Ambient Occlusion}
-Shadows are present in the scene through two methods.  
-The bulk of shadow and ambient occlusion code is handled in the method `\textbf{compute-chunk}`. This method makes use of the `\textbf{occlusion}` method found in occlusion.h.  
-    
-Specifically when creating the graphics buffer for a chunk, we have to follow a process of computing variables for each step.  For better understanding of the following, the Appendices G and H will provide a visual help to understanding shadows and occlusion in the environment.
+Shadows are addressed through height based shadow factors and ambient occlusion.  Shadows are addressed after the lighting pass occurs in the scene.  With lighting addressed, the shading component must be evaluated based on the neighbouring cubes.  The considered area with a \texttt{3x3x3} region around the current block.  In total \texttt{27} are in the region, with \texttt{26} blocks needing to be considered.  The height shading component is evaluated by iterating vertically and determining shading based on the height.  The shadows present on blocks is visible in Appendix \ref{appendix:shadows} and \ref{appendix:occlusion}.
 
-The initial steps are fairly straightforward.  First we iterate through the chunks to see if any have any light data within them.  If they do not, we have no lights.  Next we iterate through all the blocks in the scene, determining which are opaque so that they will be draw.
-    
-The next steps involved propagating light throughout the scene as defined in `Light Emitting Cube`. Essentially we iterate through all the entries in the cube, and if necessary propagate light from a light emitting position.
-    
-As we are constructing the buffer based on vertices in the scene, we first need to determine which sides of the block are visible based on the neighbouring blocks.  Once this is known, we can then begin to compute the shading and lighting factors as they influence the visible primitives.
-    
-In the case of lighting, for each cube we need to consider all 3D neighbours with a distance of 1.  This means we need to consider a 3 by 3 by 3 cube around the current block (27 cubes total including self).  The shading component here is interesting as for each of the surrounding neighbours, we determine the shading factor cast on it by blocks above it.  This is done by iterating up a certain height (y-coordinate) and if any block is visible (opaque), we factor in a shading value based on the height.
-    
-With these variables we then compute a occlusion factor.  In Minecraft-like worlds, the calculation for occlusion is significantly easier as the effect that the environment can have on the blocks is more limited in terms of number of rays.  Specifically, we only need to consider what kind of contribution nearby blocks have to the currently vertex based on positions.  In this world we have to consider when blocks are present on the sides of a vertex, and when a corner block is present.  These three blocks greatly influence the ambient occlusion value for the vertex.
-    
-In the method `occlusion` you can see this process of performing a lookup to find neighbour positions based on the face and vertex we are currently working with.  The lookup tables (\textit{neighbour-lookup-table}) work by indexing the cube face (cell) and vertex as the first two dimensions.  The final dimension is for determining the specific cube positions that influence the specified vertex.  The occlusion provides a curve factor but for the purposes of my implementation is linear.  This is meant to control the shading factor brought about by the environment influence (the position of cubes).
-    
-When determining the light and shading values, we perform a similar lookup to occlusion but we must also factor in the lighting factor for each of the vertices in a given face.  As each of these contribute in a manner to each of the vertices in the face.
-    
-A cube can be placed at a higher level in the scene to show the effect of shadows on the below cubes.
-    
-An excellent set of resources for understanding lighting is the blog 0FPS, LetsCode35, and a wrute-up by Florian Bösch.  These references are available in the acknowledgements.
-    
-See also Appendix G and H to better understand the example cases mentioned above.
+In Block-based worlds, the calculation for ambient occlusion are significantly easier as the shading influence of the environment is fairly limited.  The contribution nearby blocks have to the currently vertex based on positions.  In this world we have to consider when blocks are present on the sides of a vertex, and when a corner block is present.  A set of block configurations for a block vertex is visible in Appendix \ref{appendix:occlusion}.  These three blocks greatly influence the ambient occlusion value for the vertex.
 
 %-------------------------------------------------------------------------------
 % Conclusion
