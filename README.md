@@ -4,7 +4,7 @@
 
 # Abstract
 
-Blockycraft is a Minecraft inspired world meant to demonstrate specific graphical techniques in an interactive demo application.  Blockycraft is focused on demonstrating techniques such as Perlin Noise, Shadows and Ambient Occlusion, Light Emitting and World Lighting.   The Blockycraft manual was built as part of the documentation for the Blockycraft project.
+Blockycraft is a Minecraft inspired world meant to demonstrate specific graphical techniques in an interactive demo application.  Blockycraft is focused on demonstrating techniques such as perlin noise, shadows and ambient occlusion.   The Blockycraft manual was built as part of the documentation for the Blockycraft project.
 
 The Blockycraft manual is meant to explain usage of the interactive demo as opposed to defining the requirements of the project.
 
