@@ -2,7 +2,7 @@ compile_pdf:
   image: jrbeverly/latex:full
   stage: build
   script:
-    - sh build.sh
+    - sh build/build.sh
   only:
     - master
   artifacts:
