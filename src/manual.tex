@@ -11,6 +11,7 @@
 \usepackage{courier}
 \usepackage{mathabx}
 \usepackage[os=win]{menukeys}
+\usepackage{enumitem}
 
 %-------------------------------------------------------------------------------
 % Commands
@@ -78,7 +79,9 @@
 \subsection{Glossary of Terms}
 \begin{itemize}
 \item \textbf{Direction of Interaction} - Refers to the view vector of the player.
+\item \textbf{View Direction} - Refers to the view vector of the player.
 \item \textbf{Selected Block} - Defines the block intersected with the view vector of the player.
+\item \textbf{Spritesheet} - A sprite sheet is a bitmap image file that contains several smaller graphics in a tiled grid arrangement.
 \item \textbf{Chunk} - A spatial partition of the 3-dimensional blocks.
 \item \textbf{Fragment} - A collection of values produced by the Rasterizer. Each fragment represents a sample-sized segment of a rasterized Primitive.
 \end{itemize}
@@ -93,7 +96,7 @@ The program uses the \textbf{premake4} build system to handle the creation of co
 This process is outlined in the \texttt{README} of the source.  To run the program after compiling, simply run `\texttt{./Blockycraft}' from the command line.  To quit the program press \keys{Escape}.
 
 \subsection{Dependencies}
-In addition to the premake4 build system, the following libraries are dependencies of this application: 
+In addition to the premake4 build system, the following libraries are dependencies of this program: 
 \begin{itemize}
 	\item \href{https://github.com/nigels-com/glew}{GLEW} - The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source C/C++ extension loading library.
 	\item \href{https://www.opengl.org/resources/libraries/}{GLU} - The OpenGL Utility Library.
@@ -118,19 +121,19 @@ The interactive demo uses the standard mouse and keyboard movements controls for
 	\item \keys{D} - Moves the player character to the right relative to the view direction.
 	\item \keys{Space} - The player will jump in the scene. (or move vertically if flying is enabled)
 	\item \keys{Tab \tab} - Toggles flying, allowing you to fly through the scene.
+	\item \keys{Escape} - Quits the program.
 \end{itemize}
       
 \subsection{Special Keys}
 \begin{itemize}
-	\item \keys{Escape} - Quits the program. 
-	\item $\uparrow$ \keys{Z}, $\downarrow$ \keys{X} - Adjusts the visible global light in the scene.
-	\item $\uparrow$ \keys{J}, $\downarrow$ \keys{K} - Adjusts the frequency value used in the Octave Perlin Noise.
-	\item $\uparrow$ \keys{C}, $\downarrow$ \keys{V} - Adjusts the radius of chunks present in the scene.
-	\item \keys{F}, \keys{G} - Cycles between the available block types for placement.
 	\item \keys{P} - Toggles the visibility of particles.
 	\item \keys{O} - Toggles the orientation component of the Cloud animation.
 	\item \keys{L} - Toggles the selected block to become a Light Emitting block.
 	\item \keys{M} - Toggles the audio in the interactive demo.
+	\item $\uparrow$ \keys{Z}, $\downarrow$ \keys{X} - Adjusts the visible global light in the scene.
+	\item $\uparrow$ \keys{J}, $\downarrow$ \keys{K} - Adjusts the frequency value used in the Octave Perlin Noise.
+	\item $\uparrow$ \keys{C}, $\downarrow$ \keys{V} - Adjusts the radius of chunks present in the scene.
+	\item $\Uparrow$ \keys{F}, $\Downarrow$ \keys{G} - Cycles between the available block types for placement.
 \end{itemize}
       
 \subsection{Toggle Function Keys}
@@ -219,22 +222,22 @@ In Block-based worlds, the calculation for ambient occlusion is significantly ea
 
 \section{Conclusion}
 \subsection{Initial Iteration}
-The initial iteration of \Blockycraft{} had some major flaws in its design due to time constraints and misconceptions that existed during development of the project.  The project architecture did not readily facilitate unit or even smoke testing of key algorithms of the project.  An example is the storage of 3 dimensional data, which used a standard array with poor bounds checking and space management.  Under certain conditions this structure could cause segmentation faults.   
+The initial iteration of \Blockycraft{} had some major flaws in its design due to time constraints and misconceptions that existed during development of the project.  The project architecture did not readily facilitate unit or even smoke testing of key algorithms of the project.  An example is the storage of 3 dimensional data, which used a standard array with poor bounds checking and space management.  Under certain conditions this structure could cause segmentation faults.   The revisions of the project focused on refactoring algorithms like the perlin noise, and data storage methods.  When revising, the primary guidelines were ensuring proper testing and parallelization where possible. 
 
-The project did not make use of parallelization, as the original code architecture did not lend itself to multi-threaded environments.  The method to generate chunks, a 3 dimensional spatial region, could not easily be parallelized in the initial implementation.  As such spatial chunks needed to be generated linearly, which resulted in a significant delay in application startup and world generation.
+The project did not make use of parallelization in the first iteration, as the original code architecture did not lend itself to multi-threaded environments.  The method to generate chunks, a 3 dimensional spatial region, could not easily be parallelized in the initial implementation.  This was due to the poor storage method, in addition to the generation code.  The spatial chunks needed would be generated linearly, which resulted in a significant delay in startup while the world was generated.
 
-The initial iteration was written to be functional, as opposed to expressive.  Improvements in the \Blockycraft{} source code focus on ensuring the code was structured in a testable manner.  By separating the graphics components from the algorithms, this enabled the code to be parallelized and properly validated.
+The initial iteration was written to be functional, as opposed to expressive.  Improvements in the \Blockycraft{} source code focused on ensuring the code was structured in a testable manner.  By separating the graphics components from the algorithms, this enabled the code to be parallelized and properly validated.
 
 \subsection{Acknowledgements}
 I would like to acknowledge a collection of blog posts and resources by block-world enthusiasts who provided the basis for the project.
 
-\begin{enumerate}
-	\item Kenny Voxel Pack. {\em \href{http://kenney.nl/assets/voxel-pack}{Voxel Pack.}} \texttt{(\url{http://kenney.nl/})}
-	\item Bösch, F. 2010. {\em \href{http://codeflow.org/entries/2010/dec/09/minecraft-like-rendering-experiments-in-opengl-4/#ambient-occlusion}{Minecraft Like Rendering Experiments in OpenGL 4.}} \texttt{(\url{http://codeflow.org/})}
-	\item Let's Code. 2011. {\em \href{http://www.sea-of-memes.com/LetsCode35/LetsCode35.html}{Part 35: Minecraft Lighting.}} \texttt{(\url{http://www.sea-of-memes.com/})}
-	\item 0FPS. 2013. {\em \href{https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds/}{Ambient occlusion for Minecraft-like worlds.}} \texttt{(\url{https://0fps.net/})}
-	\item Seed of Andromeda. {\em \href{https://www.seedofandromeda.com/blogs/29-fast-flood-fill-lighting-in-a-blocky-voxel-game-pt-1/}{Fast Flood Fill Lighting in a Blocky Voxel Game: Pt 1.}} \texttt{(\url{https://www.seedofandromeda.com})}
-	\item ByteBash. 2012. {\em \href{http://bytebash.com/2012/03/opengl-volume-rendering/}{OpenGL Minecraft Style Volume Rendering.}} \texttt{(\url{http://bytebash.com})}
+\begin{enumerate}[label*={[\arabic{enumi}]}]
+\item Kenny Voxel Pack. {\em \href{http://kenney.nl/assets/voxel-pack}{Voxel Pack.}} \\\texttt{(\url{kenney.nl/})}
+\item Boesch, F. 2010. {\em \href{http://codeflow.org/entries/2010/dec/09/minecraft-like-rendering-experiments-in-opengl-4/#ambient-occlusion}{Minecraft Like Rendering Experiments in OpenGL 4.}}\\\texttt{(\url{codeflow.org/})}
+\item Let's Code. 2011. {\em \href{http://www.sea-of-memes.com/LetsCode35/LetsCode35.html}{Part 35: Minecraft Lighting.}}\\\texttt{(\url{sea-of-memes.com/})}
+\item 0FPS. 2013. {\em \href{https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds/}{Ambient occlusion for Minecraft-like worlds.}}\\\texttt{(\url{0fps.net/})}
+\item Seed of Andromeda. {\em \href{https://www.seedofandromeda.com/blogs/29-fast-flood-fill-lighting-in-a-blocky-voxel-game-pt-1/}{Fast Flood Fill Lighting in a Blocky Voxel Game: Pt 1.}}\\\texttt{(\url{seedofandromeda.com})}
+\item ByteBash. 2012. {\em \href{http://bytebash.com/2012/03/opengl-volume-rendering/}{OpenGL Minecraft Style Volume Rendering.}} \\\texttt{(\url{bytebash.com})}
 \end{enumerate}
 
 %-------------------------------------------------------------------------------
@@ -243,7 +246,6 @@ I would like to acknowledge a collection of blog posts and resources by block-wo
 
 \nocite{*}
 \begin{thebibliography}{1}
-	    
 	\bibitem{inoise} Perlin, K. 2002. {\em Improving Noise.} Computer Graphics 35(3).
 	\bibitem{gpugems}  Perlin, K. 2004. {\em Implementing Improved Perlin Noise.} GPU Gems
 	\bibitem{nparticle}  E. Hastings, R. Guha, and K. O. Stanley,. {\em Neat particles: Design, representation, and animation of particle system effects,} Proceedings of the IEEE Symposium on Computational Intelligence and Games (CIG), 2007
