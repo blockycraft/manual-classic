@@ -160,7 +160,7 @@ See Appendix \ref{appendix:world} for the voxel world at a glance.
 \subsection{User Interface}
 The user interface (UI) serves the purpose of facilitating the placement and destruction of blocks in the world.  As the 3-dimensional world consists of different types of blocks, a selection pane is present that shows the current block type for placement.  The angle of viewing (or direction of interaction) is represented by the cross-hair, a small cross in the middle of the screen.  It shows the exact point where you will use actions such as block placement or destruction.
 \vskip 2.5mm\noindent
-The user interface can be toggled by the key \keys{2}.  The block type can be cycled using the keys \keys{F} and \keys{G}.
+The user interface can be toggled by the key \keys{2}.  The block type can be cycled using the keys \keys{F} and \keys{G}.  The interface can be seen in Appendix \ref{appendix:interface}. 
 
 \subsection{UV Texture Mapping}
 The interactive demo consists of textured cubes in a procedurally generated 3-dimensional world.  The texturing of the cubes is handled through UV Mapping.  All blocks textures are defined in a sprite sheet that contains the blocks textures stored as several smaller graphics in a tiled grid arrangement.  The spritesheet uses a single value to index each tile in the grid arrangement.  The value is computed by determining the current ($x$, $y$) position the cube texture, then creating a ratio from the total size of the spritesheet.
@@ -264,6 +264,10 @@ I would like to acknowledge a collection of blog posts and resources by block-wo
 \section{Appendices}
 \subsection{World} \label{appendix:world}
 \screenshot{world}{The \Blockycraft{} World.}{world}{1.0\textwidth}
+
+\clearpage
+\subsection{User Interface} \label{appendix:interface}
+\screenshot{interface}{The user interface.}{interface}{1.0\textwidth}
 
 \clearpage
 \subsection{Perlin} \label{appendix:perlin}
