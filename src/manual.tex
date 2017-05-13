@@ -84,6 +84,7 @@
 \item \textbf{Spritesheet} - A sprite sheet is a bitmap image file that contains several smaller graphics in a tiled grid arrangement.
 \item \textbf{Chunk} - A spatial partition of the 3-dimensional blocks.
 \item \textbf{Fragment} - A collection of values produced by the Rasterizer. Each fragment represents a sample-sized segment of a rasterized Primitive.
+\item \textbf{OpenGL Shader} - A Shader is a user-defined program designed to run on some stage of a graphics processor.
 \end{itemize}
 
 %-------------------------------------------------------------------------------
@@ -153,21 +154,25 @@ The number keys toggle specific features in the scene.
 
 \section{Technical Components}
 \subsection{The Scene}
+\label{section:scene}
 The interactive demo is inspired by Minecraft, a world composed of grid-aligned cubes (known as \textit{Blocks}) in a procedurally generated 3-dimensional world.  You can build constructions using the different types of blocks.  The world is composed of a set of blocks spatially partitioned into chunks.  Each chunk is used to locate objects by storing them in a data structure organized by their positions.   A chunk is a region of \texttt{32 x 32 x 32} (width, height, depth), that stores \texttt{32768} blocks of the scene.
 \vskip 2.5mm\noindent
 See Appendix \ref{appendix:world} for the voxel world at a glance.
   
 \subsection{User Interface}
+\label{section:interface}
 The user interface (UI) serves the purpose of facilitating the placement and destruction of blocks in the world.  As the 3-dimensional world consists of different types of blocks, a selection pane is present that shows the current block type for placement.  The angle of viewing (or direction of interaction) is represented by the cross-hair, a small cross in the middle of the screen.  It shows the exact point where you will use actions such as block placement or destruction.
 \vskip 2.5mm\noindent
-The user interface can be toggled by the key \keys{2}.  The block type can be cycled using the keys \keys{F} and \keys{G}.
+The user interface can be toggled by the key \keys{2}.  The block type can be cycled using the keys \keys{F} and \keys{G}.  The interface can be seen in Appendix \ref{appendix:interface}. 
 
 \subsection{UV Texture Mapping}
+\label{section:texture}
 The interactive demo consists of textured cubes in a procedurally generated 3-dimensional world.  The texturing of the cubes is handled through UV Mapping.  All blocks textures are defined in a sprite sheet that contains the blocks textures stored as several smaller graphics in a tiled grid arrangement.  The spritesheet uses a single value to index each tile in the grid arrangement.  The value is computed by determining the current ($x$, $y$) position the cube texture, then creating a ratio from the total size of the spritesheet.
 \vskip 2.5mm\noindent
 The texturing of the blocks can be toggled by the key \keys{3}.  See Appendix \ref{appendix:shadows} and \ref{appendix:occlusion} for the world with texture mapping toggled.
 
 \subsection{Perlin Noise}
+\label{section:perlin}
 The procedurally generated world in the interactive demo is generated through Improved Perlin Noise combined with Octave Perlin Noise.  The implementation of Improved Perlin Noise is a faithful interpretation of the java reference implementation provided in the SIGGRAPH Paper by Ken Perlin.  Slight modifications have been made to the implementation for C++, however the code remains faithful to the reference implementation.
 
 The bulk of the Improved Perlin Noise implementation is with the method \texttt{noise}.  The method handles the construction of a unit cube for the purposes of calculating gradient vectors to compute the noise value.  The implementation of the \texttt{fade} function is important to understanding the sloping nature of the generated world.  The \texttt{fade} function implements an ease curve in order to provide a smooth transition between vector gradients.  This is because linear interpolation tends to produce an unnatural effect. The final result produced by the algorithm can remain relatively flat or similar to rolling planes.  Ideally we wish to be able to provide a wider breadth of world types, specifically more mountainous terrain.  Octave Perlin was implemented to produce more mountainous terrain as necessary.  The introduction of Octave Perlin added an amplitude and frequency, where the frequency determines how squished together the result is, while the amplitude determine the potential heights of peaks.
@@ -177,41 +182,49 @@ For the \Blockycraft{} demo the amplitude is set at the height of a chunk which 
 The procedurally generated world can be regenerated using the key \keys{4}.  See Appendix \ref{appendix:perlin} for visual examples of world generation based on Perlin Noise the varying frequency inputs.
     
 \subsection{Static Collision}
+\label{section:collision}
 Static collision in the demo is concerned with the player and the blocks of the procedurally generated world.  This method of collision works by focusing on the current and future positions of the player.  As the collision in the demo is limited to just the player, the movement of the player and collision are closely tied together.  The player position is adjusted when the player collides with a block, adjusting to the colliding block and a padding component to ensure consistency.
 
 To ensure that no visual conflicts occur, all collision code includes a padding component.  The padding extends the collision boundaries of blocks in the scene by a small amount.   The amount is significant enough to ensure no visual discrepancies occur from close proximity to the blocks, as well as ensuring that the player collision remains smooth.  The padding component discussed above can be experienced by running towards the edges of a block.  If you collide in just the right position, the player will be adjusted to the block neighbour, allowing you to skirt past the block.
    
 \subsection{Transparency}
-Transparency in the technical demo uses a \texttt{transparency colour}, which are pixels set to a value that is ignored in the graphics pipeline.  A sprite sheet that contains the blocks textures stored as several smaller graphics in a tiled grid arrangement, any transparent pixel is set to a pixel value of magenta (\texttt{RGB - 1.0, 0.0, 1.0}).  When the texture is passed to an OpenGL Shader, it checks to see if the fragment should be drawn with respect to the transparency colour.  When transparency is disabled, the magenta colour is visible as seen in Appendix \ref{appendix:transparency}.
+\label{section:transparency}
+Transparency in the technical demo uses a \texttt{transparency pixel}, which is a pixel set to a colour value that is ignored in the graphics pipeline.  When drawing a fragment, the OpenGL Shader checks for the value of the transparency colour, which is a pixel set to the value of magenta (\texttt{RGB - 1.0, 0.0, 1.0}).  If the fragment matches the colour, it is ignored by the graphics pipeline.  When transparency is disabled, the magenta colour is visible as seen in Appendix \ref{appendix:transparency}.  The textures for all block materials in the world are stored in a spritesheet.  The spritesheet contains the blocks textures stored as several smaller graphics in a tiled grid arrangement.
 \vskip 2.5mm\noindent
 The transparency can be toggled by the key \keys{7}.  Appendix \ref{appendix:transparency} presents a comparison of the transparency pixel.
     
 \subsection{Keyframe Animation}
+\label{section:animation}
 The interactive demo includes clouds floating above the scene.  Each of the clouds has a set of keyframes with positional and orientation values.  Using linear interpolation, the position and orientation of a cloud at a given moment can be computed.  The timing component of the clouds is incremented by a speed factor with respect to the passage of time between frames.  This ensures that the movement of clouds is bound to time as opposed to number of frames.  The cloud is drawn at the linearly interpolated position.
 \vskip 2.5mm\noindent
 The visibility of clouds can be toggled by the key \keys{8}.  The orientation component of the clouds can be toggled with the key \keys{O}.  See Appendix \ref{appendix:clouds} for example of the clouds in the scene.
 
 \subsection{Particle System}
-The interactive demo includes dust particles that appear after the destruction of a block.  When the block is destroyed, a set of dust particles appear for a short duration, moving randomly away from the center of the destroyed block in a random direction.  The dust particles are scaled based on a factor of time, disappearing after a short period.  The movement code requires that the particles will always move away from the center of the destroyed cube.  To ensure that the particles remain visually consistent, they are using a billboard effect.  The billboard effect used with the particles requires the removal of the rotational component of the world-view matrix.  To do this the inner \texttt{3x3} matrix is set to the identity matrix, then the scalar component is reapplied.  The final result is a dust particle that always faces towards the player.
+\label{section:particles}
+The interactive demo includes dust particles that appear after the destruction of a block.  When the block is destroyed, a set of dust particles appear for a short duration, moving in a random direction and velocity away from the center of the destroyed block.  The dust particles are scaled down based on a factor of time, disappearing after a short period.  The movement code requires that the particles will always move away from the center of the destroyed cube.  The particles orient themselves based on Billboarding, ensuring that they face towards the camera direction.  In graphics, a billboard is a textured flat object, usually a polygon, which faces the camera.  Billboarding is a operation to orient an object to always faces the camera direction.  In the case of the particles, they are a cube to keep consistent with the Minecraft's style.  The direction changes constantly so that the particles will always faces toward the camera direction.  The method used with the particles requires the removal of the rotational component of the world-view matrix.  The inner \texttt{3x3} matrix is set to the identity matrix, then the scalar component is reapplied.  The final result is a dust particle that always faces towards the player.
 \vskip 2.5mm\noindent
 The visibility of particles can be toggled by the key \keys{9}.  The visual state of particles can be toggled by the key \keys{P}.  See Appendix \ref{appendix:particles} for a visual representation of dust particles in varying visual states.
 
 \subsection{Sound}
-The interactive demo includes a sound component, that plays both ambient audio and world music.  As the player traverses through the scene, they will hear audio based on the current terrain.  The footsteps audio is pseudo-randomly chosen in order to prevent the footstep sounds from being repetitive.  Using similar code as the collision detection, the footstep audio changes according to the terrain.  For ambience, the scene has audio playing in the background based on where the player is currently.  Whether the player is roaming above ground or splunking, the background audio will change accordingly.  This is done using similar code as the collision detection, to verify if the player is currently underground.
+\label{section:sound}
+The interactive demo includes a sound component that plays sound effects and background music.  Background music is playing to set the scene for the player.  Depending on whether the player is in the overworld or underground, the music will change to reflect the current player position.  As the player traverses through the scene, they will hear footstep sound effects based on the current terrain.  Using terrain detection code from the static collision component (see section \ref{section:collision}), the footsteps reflect the current terrain material (dirt, grass, snow, etc.).  Each material has a collection of single footstep sound effects, which are pseudo-randomly played to create the player's footsteps.  The sound component aims to provide the audio experience of splunking underground in a rocky cave.
 \vskip 2.5mm\noindent
 The audio in the demo can be disabled using the key \keys{M}.
     
 \subsection{World Lighting}
+\label{section:lighting}
 The interactive demo has static lighting that represents the lighting of the world.  The lighting value is known as time of day and provides an overall lighting factor for the scene.  To ensure that the world lighting does not oversaturate the scene, the potential contribution value is capped within the range of \texttt{[0.2, 0.5]}.  The lighting value for any fragment in the scene is a composite of diffuse, ambient occlusion, daylight lighting values, and any incident light from light emitting objects present in the scene.
 \vskip 2.5mm\noindent
 The world lighting can be adjusted with the keys \keys{X} and \keys{Z}.
     
 \subsection{Light Emitting Cube}
+\label{section:lights}
 Blocks in the world can be enabled as a light emitting block.  Any block can be set as a light emitting block, which will emit light influencing the lighting values of neighbouring blocks.  Light is distributed throughout the scene in a radial manner from the cube, dissipating based on distance.  The result is a diamond-like light formation emitting from the cube, which can be seen in Appendix \ref{appendix:light}.  When preparing the chunk for drawing, the lighting for each cube is factored into the graphics buffer for a spatial chunk.  The texture mapping, shadows and ambient occlusion are also addressed in this stage.  
 \vskip 2.5mm\noindent
 A cube in the world can be toggled as a light emitting cube using the key \keys{L}.  See Appendix \ref{appendix:light} for a visual representation of the light emittance formation.
     
 \subsection{Shadows and Ambient Occlusion}
+\label{section:shadows}
 Shadows are present as height based shadow and ambient occlusion.  Shadows are addressed after the lighting pass occurs in the scene.  With lighting addressed, the shading component must be evaluated based on the neighbouring cubes.  The considered area with a \texttt{3x3x3} region around the current block.  In total \texttt{27} are in the region, with \texttt{26} blocks needing to be considered.  The height shading component is evaluated by iterating vertically and determining shading based on the height.  The shadows present on blocks is visible in Appendix \ref{appendix:shadows} and \ref{appendix:occlusion}.
 
 In Block-based worlds, the calculation for ambient occlusion is significantly easier as the shading influence on the environment is fairly straightforward.  The contribution nearby blocks have to the currently vertex based on positions.  In this world we have to consider when blocks are present on the sides of a vertex, and when a corner block is present.  A set of block configurations for a block vertex is visible in Appendix \ref{appendix:occlusion}.  These three blocks greatly influence the ambient occlusion value for the vertex.
@@ -264,6 +277,10 @@ I would like to acknowledge a collection of blog posts and resources by block-wo
 \section{Appendices}
 \subsection{World} \label{appendix:world}
 \screenshot{world}{The \Blockycraft{} World.}{world}{1.0\textwidth}
+
+\clearpage
+\subsection{User Interface} \label{appendix:interface}
+\screenshot{interface}{The user interface.}{interface}{1.0\textwidth}
 
 \clearpage
 \subsection{Perlin} \label{appendix:perlin}
