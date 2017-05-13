@@ -212,9 +212,9 @@ The audio in the demo can be disabled using the key \keys{M}.
     
 \subsection{World Lighting}
 \label{section:lighting}
-The interactive demo has static lighting that represents the lighting of the world.  The lighting value is known as time of day and provides an overall lighting factor for the scene.  To ensure that the world lighting does not oversaturate the scene, the potential contribution value is capped within the range of \texttt{[0.2, 0.5]}.  The lighting value for any fragment in the scene is a composite of diffuse, ambient occlusion, daylight lighting values, and any incident light from light emitting objects present in the scene.
+The interactive demo has static lighting that represents the lighting of the world.  The lighting value is known as time of day and provides an overall lighting factor for the scene.  To ensure that the world lighting does not oversaturate the scene, the potential contribution value is capped within the range of $[0.0, 1.0]$.  This range was set based on a series of visual tests to determine a reasonable range for the lighting.  The world light component is factored into the lighting value of every fragment of the block world.  The lighting value for any fragment of a block is a composite of diffuse, ambient occlusion, daylight lighting values, and any incident light from light emitting objects present in the scene. 
 \vskip 2.5mm\noindent
-The world lighting can be adjusted with the keys \keys{X} and \keys{Z}.
+The world lighting can be adjusted with the keys \keys{X} and \keys{Z}.  The scene present in Appendix \ref{appendix:interface} is visible with the default lighting of $1.0$.
     
 \subsection{Light Emitting Cube}
 \label{section:lights}
