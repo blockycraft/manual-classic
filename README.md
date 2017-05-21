@@ -38,6 +38,10 @@ sh build/compile.sh
 
 This project's manual is built by [GitLab CI](https://about.gitlab.com/gitlab-ci/), following the steps defined in [`.gitlab-ci.yml`](.gitlab-ci.yml).  The build scripts are available in `build/`, which are used to compile the TeX file.
 
+## Acknowledgements
+
+The Blockycraft project makes use of the [`Kenny Voxel Pack`](http://kenney.nl/assets/voxel-pack), both in the source and to construct the project icons.  The pack contains textures, items and characters that can be used to create both 2D and 3D block games.  The pack can be accessed from [`kenney.nl/`](http://kenney.nl/assets/voxel-pack).
+
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
 [license-link]: LICENSE
 
