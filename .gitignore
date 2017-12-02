@@ -214,3 +214,6 @@ TSWLatexianTemp*
 *-tags.tex
 *.pdf
 output/
+
+# Documentation
+docs/**/images/
