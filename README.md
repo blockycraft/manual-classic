@@ -1,6 +1,4 @@
 # Blockycraft Manual
-[![License][license-badge]][license-link]
-[![Download][download-badge]][download-link]
 
 ## Summary
 
@@ -40,10 +38,6 @@ This project's manual is built by [GitLab CI](https://about.gitlab.com/gitlab-ci
 
 ## Acknowledgements
 
-The Blockycraft project makes use of the [`Kenny Voxel Pack`](http://kenney.nl/assets/voxel-pack), both in the source and to construct the project icons.  The pack contains textures, items and characters that can be used to create both 2D and 3D block games.  The pack can be accessed from [`kenney.nl/`](http://kenney.nl/assets/voxel-pack).
+The project icon is retrieved from [kenney.nl](docs/icon/icon.json). The original source material has been altered for the purposes of the project. The icon is used under the terms of the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
 
-[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
-[license-link]: LICENSE
-
-[download-badge]: https://img.shields.io/badge/artifacts-manual.pdf-red.svg?maxAge=2592000
-[download-link]: /../builds/artifacts/master/download?job=compile_pdf
+The project icon uses assets by [Kenney from kenney.nl/](http://kenney.nl/assets/voxel-pack).
