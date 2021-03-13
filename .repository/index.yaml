@@ -1,0 +1,16 @@
+slug: manual-classic
+namespace: classic
+project: blockycraft
+status: archived
+icon: icon.svg
+license:
+  type: MIT
+  content: Jonathan Beverly <jrbeverly>
+  year: 2017
+topics: |-
+  [
+    "latex",
+    "manual",
+    "blockycraft",
+    "documentation"
+  ]
